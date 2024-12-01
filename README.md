@@ -2,8 +2,7 @@ Lista de acciones o funciones con las que cuenta el proyecto:
 
 1. Todas las estructuras de control: Secuencial, decisión, repetición y sus derivadas. ✔️ 
 2. Dos o más clases ✔️
-3. Métodos: Que reciban como parámetro y/ o retornen valores de todos los tipos primitivos ✔️
-de datos (enteros, reales, caracteres y booleanos) ✔️
+3. Métodos: Que reciban como parámetro y/ o retornen valores de todos los tipos de datos primitivos. ✔️
 4. Métodos: Que reciban como parámetro y/o retornen Cadenas ✔️
 5. Métodos Estáticos y no estáticos ✔️
 6. Métodos del Api de java ✔️
