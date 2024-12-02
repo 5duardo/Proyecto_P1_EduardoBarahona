@@ -19,9 +19,9 @@ public class Garaje {
     public Garaje() {
         carros = new HashMap<>();
         //carros de ejemplo
-        carros.put("Ferrari LaFerrari", new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2015, 800, 350, 5));
-        carros.put("Ferrari 599", new Carro("Ferrari 599", "Ferrari", "599", 2006, 620, 330, 4));
-        carros.put("Ferrari F40", new Carro("Ferrari F40", "Ferrari", "F40", 1987, 478, 324, 3));
+        carros.put("Ferrari LaFerrari", new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2015, 800, 350, 0));
+        carros.put("Lamborghini Huracan", new Carro("Lamborghini Huracan", "Huracan", "Huracan", 2006, 620, 330, 0));
+        carros.put("BMW M4", new Carro("BMW M4", "BMW", "M4", 1987, 478, 324, 0));
     }
 
     public Carro obtenerCarro(String nombre) {
