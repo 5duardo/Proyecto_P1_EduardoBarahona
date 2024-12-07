@@ -4,31 +4,48 @@
  */
 package proyecto_final_eduardo_barahona;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author eduar
  */
 public class Garaje {
-    
 
-    private HashMap<String, Carro> carros;
+    private List<Carro> carros;
+    private Carro carroSeleccionado;
 
     public Garaje() {
-        carros = new HashMap<>();
-        //carros de ejemplo
-        carros.put("Ferrari LaFerrari", new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2015, 800, 350, 0));
-        carros.put("Lamborghini Huracan", new Carro("Lamborghini Huracan", "Huracan", "Huracan", 2006, 620, 330, 0));
-        carros.put("BMW M4", new Carro("BMW M4", "BMW", "M4", 1987, 478, 324, 0));
+        carros = new ArrayList<>();
+        // Carros de ejemplo
+        carros.add(new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2015, 800, 350, 0));
+        carros.add(new Carro("Lamborghini Huracan", "Lamborghini", "Huracan", 2020, 620, 330, 0));
+        carros.add(new Carro("BMW M4", "BMW", "M4", 2005, 478, 324, 0));
     }
 
     public Carro obtenerCarro(String nombre) {
-        return carros.get(nombre);
+        for (Carro carro : carros) {
+            if (carro.getNombre().equals(nombre)) {
+                return carro;
+            }
+        }
+        return null;
     }
     
-    public Map<String, Carro> obtenerTodosLosCarros() {
+    public List<Carro> obtenerTodosLosCarros() {
         return carros;
     }
+    
+    // Método para establecer el carro seleccionado
+    public void setCarroSeleccionado(Carro carro) {
+        this.carroSeleccionado = carro;
+    }
+
+    // Método para obtener el carro seleccionado
+    public Carro getCarroSeleccionado() {
+        return carroSeleccionado;
+    }
+
+
 }

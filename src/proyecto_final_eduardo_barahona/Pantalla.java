@@ -13,35 +13,58 @@ import javax.swing.JOptionPane;
  */
 public class Pantalla extends javax.swing.JFrame {
 
-    public Pantalla() {
-          initComponents();
-          // metodo para centrar la ventana
-          centrarVentana(); 
-          menuGaraje.setEnabled(false);  //des el boton
-          menuTuning.setEnabled(false);  //des el boton
-          menuCarrera.setEnabled(false);  //des el boton
-        
-            // Ocultar las imagenes de los carros antes de comenzar
-            CarroCarrera1.setVisible(false);
-            CarroCarrera2.setVisible(false);
-            CarroCarrera3.setVisible(false);
+    static boolean tieneCarro = false;
+    static String Carro = " ";
+    private Carro carroSeleccionado;
+    private Garaje garaje; // Instancia global de Garaje
+    private Pantalla pantalla; // Define pantalla como atributo de clase
 
-            carreraMenu.setVisible(false);
-        
+    public Pantalla() {
+        initComponents();
+        // metodo para centrar la ventana
+        centrarVentana();
+        menuGaraje.setEnabled(false);  //des el boton
+        menuTuning.setEnabled(false);  //des el boton
+        menuCarrera.setEnabled(false);  //des el boton
+
+        carreraMenu.setVisible(false);
+
+        actualizarDineroEnPantalla();
+
+        this.garaje = new Garaje(); // Inicializa la variable en el constructor
     }
-    
-    
+
+    private static int dinero = 800000; // Variable global de dinero
+
+    public static int getDinero() {
+        return dinero;
+    }
+
+    public static void setDinero(int nuevoDinero) {
+        dinero = nuevoDinero;
+    }
+
+    public void actualizarDineroEnPantalla() {
+        // Formatear el dinero para que sea más legible
+        String dineroTexto = String.format("Dinero Disponible: %,d", dinero);
+
+        // Actualizar todos los JLabels con el texto formateado
+        logosDinero.setText(dineroTexto);
+        menuDinero.setText(dineroTexto);
+        TunningDinero.setText(dineroTexto);
+    }
+
     private void centrarVentana() {
-    // Obtiene el tamaño de la pantalla
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    // Obtiene el tamaño de la ventana
-    Dimension frameSize = this.getSize();
-    // Calcula la posición (x, y)
-    int x = (screenSize.width - frameSize.width) / 2;
-    int y = (screenSize.height - frameSize.height) / 2;
-    // Establece la ubicación de la ventana
-    this.setLocation(x, y);
-}
+        // Obtiene el tamaño de la pantalla
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // Obtiene el tamaño de la ventana
+        Dimension frameSize = this.getSize();
+        // Calcula la posición (x, y)
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+        // Establece la ubicación de la ventana
+        this.setLocation(x, y);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,6 +77,7 @@ public class Pantalla extends javax.swing.JFrame {
 
         Menu = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
+        menuDinero = new javax.swing.JLabel();
         menuCarrera = new javax.swing.JButton();
         menuTuning = new javax.swing.JButton();
         menuGaraje = new javax.swing.JButton();
@@ -62,6 +86,7 @@ public class Pantalla extends javax.swing.JFrame {
         Fondo1 = new javax.swing.JLabel();
         Logos = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
+        logosDinero = new javax.swing.JLabel();
         logoBMW = new javax.swing.JLabel();
         logoLambo = new javax.swing.JLabel();
         seleccionaMarca = new javax.swing.JLabel();
@@ -93,6 +118,7 @@ public class Pantalla extends javax.swing.JFrame {
         Fondo2 = new javax.swing.JLabel();
         Tuning = new javax.swing.JDialog();
         jPanel8 = new javax.swing.JPanel();
+        TunningDinero = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -125,11 +151,18 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        Menu.setUndecorated(true);
         Menu.setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(102, 153, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        menuDinero.setBackground(new java.awt.Color(0, 0, 0));
+        menuDinero.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        menuDinero.setForeground(new java.awt.Color(255, 255, 255));
+        menuDinero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        menuDinero.setText("jLabel1");
+        menuDinero.setOpaque(true);
+        jPanel3.add(menuDinero, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 60, 180, 30));
 
         menuCarrera.setBackground(new java.awt.Color(0, 0, 0));
         menuCarrera.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -143,7 +176,7 @@ public class Pantalla extends javax.swing.JFrame {
                 menuCarreraActionPerformed(evt);
             }
         });
-        jPanel3.add(menuCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 480, 150, 40));
+        jPanel3.add(menuCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, 150, 40));
 
         menuTuning.setBackground(new java.awt.Color(0, 0, 0));
         menuTuning.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -157,7 +190,7 @@ public class Pantalla extends javax.swing.JFrame {
                 menuTuningActionPerformed(evt);
             }
         });
-        jPanel3.add(menuTuning, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 480, 150, 40));
+        jPanel3.add(menuTuning, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, 150, 40));
 
         menuGaraje.setBackground(new java.awt.Color(0, 0, 0));
         menuGaraje.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -170,7 +203,7 @@ public class Pantalla extends javax.swing.JFrame {
                 menuGarajeActionPerformed(evt);
             }
         });
-        jPanel3.add(menuGaraje, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 480, 150, 40));
+        jPanel3.add(menuGaraje, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 450, 150, 40));
 
         menuCerrar.setBackground(new java.awt.Color(255, 51, 51));
         menuCerrar.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -183,7 +216,7 @@ public class Pantalla extends javax.swing.JFrame {
                 menuCerrarActionPerformed(evt);
             }
         });
-        jPanel3.add(menuCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, 150, 40));
+        jPanel3.add(menuCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 450, 150, 40));
 
         tMenuPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         tMenuPrincipal.setFont(new java.awt.Font("ROG Fonts", 0, 24)); // NOI18N
@@ -196,7 +229,7 @@ public class Pantalla extends javax.swing.JFrame {
 
         Fondo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/menu.jpg"))); // NOI18N
         Fondo1.setText("jLabel4");
-        jPanel3.add(Fondo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 960, 560));
+        jPanel3.add(Fondo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 960, 530));
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu.getContentPane());
         Menu.getContentPane().setLayout(MenuLayout);
@@ -209,11 +242,18 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        Logos.setUndecorated(true);
         Logos.setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(102, 153, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        logosDinero.setBackground(new java.awt.Color(0, 0, 0));
+        logosDinero.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        logosDinero.setForeground(new java.awt.Color(255, 255, 255));
+        logosDinero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logosDinero.setText("jLabel1");
+        logosDinero.setOpaque(true);
+        jPanel2.add(logosDinero, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 490, 180, 30));
 
         logoBMW.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/BMW-logo.png"))); // NOI18N
         logoBMW.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -240,7 +280,7 @@ public class Pantalla extends javax.swing.JFrame {
         seleccionaMarca.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         seleccionaMarca.setText("SELECCIONA tu vehiculo");
         seleccionaMarca.setOpaque(true);
-        jPanel2.add(seleccionaMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 940, 40));
+        jPanel2.add(seleccionaMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 50));
 
         logoFerrari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/ferrari-logo.png"))); // NOI18N
         logoFerrari.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -266,26 +306,28 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        Lambo.setUndecorated(true);
         Lambo.setResizable(false);
         Lambo.setSize(new java.awt.Dimension(960, 530));
 
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        lamboMenu.setBackground(new java.awt.Color(0, 0, 0));
+        lamboMenu.setForeground(new java.awt.Color(255, 255, 255));
         lamboMenu.setText("MENU");
         lamboMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lamboMenuActionPerformed(evt);
             }
         });
-        jPanel4.add(lamboMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 90, 30));
+        jPanel4.add(lamboMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 90, -1));
 
         jLabel7.setBackground(new java.awt.Color(204, 102, 0));
         jLabel7.setFont(new java.awt.Font("ROG Fonts", 0, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("LAMBORGHINI");
         jLabel7.setOpaque(true);
-        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 920, 40));
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 40));
 
         lamboHuracan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/lambo2.png"))); // NOI18N
         lamboHuracan.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -293,7 +335,7 @@ public class Pantalla extends javax.swing.JFrame {
                 lamboHuracanMouseClicked(evt);
             }
         });
-        jPanel4.add(lamboHuracan, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, -1, -1));
+        jPanel4.add(lamboHuracan, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, -1, -1));
 
         fondoLambo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/taller.jpg"))); // NOI18N
         jPanel4.add(fondoLambo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 530));
@@ -309,7 +351,6 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        Ferrari.setUndecorated(true);
         Ferrari.setResizable(false);
         Ferrari.setSize(new java.awt.Dimension(960, 530));
 
@@ -332,7 +373,7 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("FERRARI");
         jLabel4.setOpaque(true);
-        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 920, 40));
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 40));
 
         ferrariLaferrari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/Ferrari2.png"))); // NOI18N
         ferrariLaferrari.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -340,7 +381,7 @@ public class Pantalla extends javax.swing.JFrame {
                 ferrariLaferrariMouseClicked(evt);
             }
         });
-        jPanel5.add(ferrariLaferrari, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, -1, -1));
+        jPanel5.add(ferrariLaferrari, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 250, -1, -1));
 
         fondoFerrari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/taller.jpg"))); // NOI18N
         jPanel5.add(fondoFerrari, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 530));
@@ -356,7 +397,6 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        Garaje.setUndecorated(true);
         Garaje.setResizable(false);
 
         jPanel7.setBackground(new java.awt.Color(102, 153, 255));
@@ -371,7 +411,7 @@ public class Pantalla extends javax.swing.JFrame {
                 garajeMenuActionPerformed(evt);
             }
         });
-        jPanel7.add(garajeMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 200, -1));
+        jPanel7.add(garajeMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 200, -1));
 
         GarajeCarroNitro.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroNitro.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -379,7 +419,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroNitro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroNitro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroNitro.setOpaque(true);
-        jPanel7.add(GarajeCarroNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 300, 190, 40));
+        jPanel7.add(GarajeCarroNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 380, 190, 40));
 
         GarajeCarroMotor.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroMotor.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -387,7 +427,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroMotor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroMotor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroMotor.setOpaque(true);
-        jPanel7.add(GarajeCarroMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 420, 190, 40));
+        jPanel7.add(GarajeCarroMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 280, 190, 40));
 
         GarajeCarroVelocidad.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroVelocidad.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -395,7 +435,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroVelocidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroVelocidad.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroVelocidad.setOpaque(true);
-        jPanel7.add(GarajeCarroVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 190, 40));
+        jPanel7.add(GarajeCarroVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 190, 190, 40));
 
         GarajeCarroAnio.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroAnio.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -403,7 +443,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroAnio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroAnio.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroAnio.setOpaque(true);
-        jPanel7.add(GarajeCarroAnio, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 210, 40));
+        jPanel7.add(GarajeCarroAnio, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 190, 210, 40));
 
         GarajeCarroModelo.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroModelo.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -411,7 +451,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroModelo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroModelo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroModelo.setOpaque(true);
-        jPanel7.add(GarajeCarroModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 180, 40));
+        jPanel7.add(GarajeCarroModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 180, 40));
 
         GarajeCarroMarca.setBackground(new java.awt.Color(0, 0, 0));
         GarajeCarroMarca.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
@@ -419,7 +459,7 @@ public class Pantalla extends javax.swing.JFrame {
         GarajeCarroMarca.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         GarajeCarroMarca.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         GarajeCarroMarca.setOpaque(true);
-        jPanel7.add(GarajeCarroMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 190, 40));
+        jPanel7.add(GarajeCarroMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 190, 40));
 
         seleccionaMarca1.setBackground(new java.awt.Color(255, 255, 255));
         seleccionaMarca1.setFont(new java.awt.Font("ROG Fonts", 0, 24)); // NOI18N
@@ -428,10 +468,10 @@ public class Pantalla extends javax.swing.JFrame {
         seleccionaMarca1.setText("Mi garaje");
         seleccionaMarca1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
         seleccionaMarca1.setOpaque(true);
-        jPanel7.add(seleccionaMarca1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 900, 50));
+        jPanel7.add(seleccionaMarca1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 50));
 
         garajeCarroImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/carro-silueta.png"))); // NOI18N
-        jPanel7.add(garajeCarroImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, -1, 180));
+        jPanel7.add(garajeCarroImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, -1, 180));
 
         Fondo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/taller.jpg"))); // NOI18N
         Fondo2.setText("jLabel4");
@@ -449,31 +489,38 @@ public class Pantalla extends javax.swing.JFrame {
         );
 
         Tuning.setTitle("Tuning");
-        Tuning.setUndecorated(true);
         Tuning.setResizable(false);
 
         jPanel8.setBackground(new java.awt.Color(102, 153, 255));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        TunningDinero.setBackground(new java.awt.Color(0, 0, 0));
+        TunningDinero.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        TunningDinero.setForeground(new java.awt.Color(255, 255, 255));
+        TunningDinero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TunningDinero.setText("jLabel1");
+        TunningDinero.setOpaque(true);
+        jPanel8.add(TunningDinero, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 200, 30));
 
         jLabel9.setBackground(new java.awt.Color(0, 0, 0));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/nitro.png"))); // NOI18N
         jLabel9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         jLabel9.setOpaque(true);
-        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 270, 190, 190));
+        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 210, 190, 190));
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/velocimetro.png"))); // NOI18N
         jLabel8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         jLabel8.setOpaque(true);
-        jPanel8.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 270, 190, 190));
+        jPanel8.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 210, 190, 190));
 
         jLabel6.setBackground(new java.awt.Color(0, 0, 0));
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/motor.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         jLabel6.setOpaque(true);
-        jPanel8.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 190, 190));
+        jPanel8.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 190, 190));
 
         tuningNivelVelocidad.setBackground(new java.awt.Color(0, 0, 0));
         tuningNivelVelocidad.setForeground(new java.awt.Color(255, 255, 255));
@@ -481,7 +528,7 @@ public class Pantalla extends javax.swing.JFrame {
         tuningNivelVelocidad.setText("NIVEL VELOCIDAD");
         tuningNivelVelocidad.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         tuningNivelVelocidad.setOpaque(true);
-        jPanel8.add(tuningNivelVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, 190, 30));
+        jPanel8.add(tuningNivelVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, 190, 30));
 
         tuningNivelNitro.setBackground(new java.awt.Color(0, 0, 0));
         tuningNivelNitro.setForeground(new java.awt.Color(255, 255, 255));
@@ -489,7 +536,7 @@ public class Pantalla extends javax.swing.JFrame {
         tuningNivelNitro.setText("NIVEL NITRO");
         tuningNivelNitro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         tuningNivelNitro.setOpaque(true);
-        jPanel8.add(tuningNivelNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 230, 190, 30));
+        jPanel8.add(tuningNivelNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 170, 190, 30));
 
         tuningNivelMotor.setBackground(new java.awt.Color(0, 0, 0));
         tuningNivelMotor.setForeground(new java.awt.Color(255, 255, 255));
@@ -497,7 +544,7 @@ public class Pantalla extends javax.swing.JFrame {
         tuningNivelMotor.setText("NIVEL MOTOR");
         tuningNivelMotor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white, java.awt.Color.white));
         tuningNivelMotor.setOpaque(true);
-        jPanel8.add(tuningNivelMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 190, 30));
+        jPanel8.add(tuningNivelMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 190, 30));
 
         tuningMejorarNitro.setBackground(new java.awt.Color(0, 0, 0));
         tuningMejorarNitro.setForeground(new java.awt.Color(255, 255, 255));
@@ -507,7 +554,7 @@ public class Pantalla extends javax.swing.JFrame {
                 tuningMejorarNitroActionPerformed(evt);
             }
         });
-        jPanel8.add(tuningMejorarNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, 190, -1));
+        jPanel8.add(tuningMejorarNitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 410, 190, -1));
 
         tuningMejorarVelocidad.setBackground(new java.awt.Color(0, 0, 0));
         tuningMejorarVelocidad.setForeground(new java.awt.Color(255, 255, 255));
@@ -517,7 +564,7 @@ public class Pantalla extends javax.swing.JFrame {
                 tuningMejorarVelocidadActionPerformed(evt);
             }
         });
-        jPanel8.add(tuningMejorarVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 470, 190, -1));
+        jPanel8.add(tuningMejorarVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 410, 190, -1));
 
         tuningMejorarMotor.setBackground(new java.awt.Color(0, 0, 0));
         tuningMejorarMotor.setForeground(new java.awt.Color(255, 255, 255));
@@ -527,7 +574,7 @@ public class Pantalla extends javax.swing.JFrame {
                 tuningMejorarMotorActionPerformed(evt);
             }
         });
-        jPanel8.add(tuningMejorarMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 470, 190, -1));
+        jPanel8.add(tuningMejorarMotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 190, -1));
 
         tunningMenu.setBackground(new java.awt.Color(255, 255, 255));
         tunningMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -538,7 +585,7 @@ public class Pantalla extends javax.swing.JFrame {
                 tunningMenuActionPerformed(evt);
             }
         });
-        jPanel8.add(tunningMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 200, -1));
+        jPanel8.add(tunningMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 200, -1));
 
         seleccionaMarca2.setBackground(new java.awt.Color(255, 255, 255));
         seleccionaMarca2.setFont(new java.awt.Font("ROG Fonts", 0, 24)); // NOI18N
@@ -547,7 +594,7 @@ public class Pantalla extends javax.swing.JFrame {
         seleccionaMarca2.setText("tunning menu");
         seleccionaMarca2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
         seleccionaMarca2.setOpaque(true);
-        jPanel8.add(seleccionaMarca2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 900, 50));
+        jPanel8.add(seleccionaMarca2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 50));
 
         Fondo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/taller.jpg"))); // NOI18N
         Fondo3.setText("jLabel4");
@@ -564,7 +611,6 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        Carrera.setUndecorated(true);
         Carrera.setResizable(false);
 
         jPanel9.setBackground(new java.awt.Color(102, 153, 255));
@@ -572,15 +618,15 @@ public class Pantalla extends javax.swing.JFrame {
 
         CarroCarrera3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CarroCarrera3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/Ferrari2.png"))); // NOI18N
-        jPanel9.add(CarroCarrera3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 270, 380, 200));
+        jPanel9.add(CarroCarrera3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, 380, 200));
 
         CarroCarrera2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CarroCarrera2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/lambo2.png"))); // NOI18N
-        jPanel9.add(CarroCarrera2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, 380, 200));
+        jPanel9.add(CarroCarrera2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 210, 380, 200));
 
         CarroCarrera1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CarroCarrera1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/BMW.png"))); // NOI18N
-        jPanel9.add(CarroCarrera1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 380, 200));
+        jPanel9.add(CarroCarrera1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 380, 200));
 
         carreraMenu.setBackground(new java.awt.Color(255, 255, 255));
         carreraMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -591,7 +637,7 @@ public class Pantalla extends javax.swing.JFrame {
                 carreraMenuActionPerformed(evt);
             }
         });
-        jPanel9.add(carreraMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 490, 200, -1));
+        jPanel9.add(carreraMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, 150, -1));
 
         empezarCarrera.setBackground(new java.awt.Color(255, 255, 255));
         empezarCarrera.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -602,7 +648,7 @@ public class Pantalla extends javax.swing.JFrame {
                 empezarCarreraActionPerformed(evt);
             }
         });
-        jPanel9.add(empezarCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 490, 140, -1));
+        jPanel9.add(empezarCarrera, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, 150, -1));
 
         seleccionaMarca3.setBackground(new java.awt.Color(255, 255, 255));
         seleccionaMarca3.setFont(new java.awt.Font("ROG Fonts", 0, 24)); // NOI18N
@@ -611,7 +657,7 @@ public class Pantalla extends javax.swing.JFrame {
         seleccionaMarca3.setText("carrera");
         seleccionaMarca3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black, java.awt.Color.black));
         seleccionaMarca3.setOpaque(true);
-        jPanel9.add(seleccionaMarca3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 900, 50));
+        jPanel9.add(seleccionaMarca3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 50));
 
         Fondo4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/circuito.jpg"))); // NOI18N
         Fondo4.setText("jLabel4");
@@ -629,7 +675,6 @@ public class Pantalla extends javax.swing.JFrame {
             .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        BMW.setUndecorated(true);
         BMW.setResizable(false);
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -650,7 +695,7 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("BMW");
         jLabel5.setOpaque(true);
-        jPanel6.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 920, 40));
+        jPanel6.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 50));
 
         bmwM4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/BMW.png"))); // NOI18N
         bmwM4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -658,7 +703,7 @@ public class Pantalla extends javax.swing.JFrame {
                 bmwM4MouseClicked(evt);
             }
         });
-        jPanel6.add(bmwM4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
+        jPanel6.add(bmwM4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
 
         fondoFerrari1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/taller.jpg"))); // NOI18N
         jPanel6.add(fondoFerrari1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 530));
@@ -675,7 +720,7 @@ public class Pantalla extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
+        setTitle("Exo Cars");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(122, 131, 255));
@@ -702,7 +747,7 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel2.setText("EXO CARS");
         jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255)));
         jLabel2.setOpaque(true);
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 940, 60));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 60));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/inicio.jpg"))); // NOI18N
         jLabel3.setText("jLabel3");
@@ -722,356 +767,440 @@ public class Pantalla extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
 
     private void botonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInicioActionPerformed
         // TODO add your handling code here:
-         Logos.setVisible(true);
-         Logos.setLocation( this.getX(), this.getY());
-         Logos.setSize(960, 530);
+        this.setVisible(false);
+        Logos.setVisible(true);
+        Logos.setLocation(this.getX(), this.getY());
+        Logos.setSize(960, 530);
     }//GEN-LAST:event_botonInicioActionPerformed
 
     private void logoLamboMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoLamboMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
+        Logos.setVisible(false);
         Lambo.setVisible(true);
-        Lambo.setLocation( this.getX(), this.getY());
+        Lambo.setLocation(this.getX(), this.getY());
         Lambo.setSize(960, 530);
     }//GEN-LAST:event_logoLamboMouseClicked
 
     private void logoFerrariMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoFerrariMouseClicked
         // TODO add your handling code here:
-         this.setVisible(false);
+        this.setVisible(false);
+        Logos.setVisible(false);
         Ferrari.setVisible(true);
-        Ferrari.setLocation( this.getX(), this.getY());
-        Ferrari.setSize(960, 530);    
+        Ferrari.setLocation(this.getX(), this.getY());
+        Ferrari.setSize(960, 530);
     }//GEN-LAST:event_logoFerrariMouseClicked
 
-    
-
-    
     // CARROS
     private void ferrariLaferrariMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ferrariLaferrariMouseClicked
-        // TODO add your handling code here:  
-              
-        Garaje garaje = new Garaje(); // Crear instancia del garaje
-        
-        if (tieneCarro){
-            
-             JOptionPane.showConfirmDialog(null, "Ya tiene un carro", "Comprar Carro", JOptionPane.YES_OPTION);   
-        }
-       else{ 
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Ferrari LaFerrari?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION) {
-            tieneCarro = true;
+        // Obtener el carro Ferrari LaFerrari
+        Carro ferrariLaFerrari = garaje.obtenerCarro("Ferrari LaFerrari");
 
-           menuGaraje.setEnabled(true);  //habilitar el boton
-           menuTuning.setEnabled(true);  //habilitar el boton
-           menuCarrera.setEnabled(true);  //habilitar el boton
-            
-             // Asignar el carro seleccionado
-            carroSeleccionado = garaje.obtenerCarro("Ferrari LaFerrari");
-            
-            GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
-            GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
-            GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
-            
-            GarajeCarroVelocidad.setText("Velocidad Maxima: " + carroSeleccionado.getVelocidadMaxima());
-            GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
-            GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro()); 
-            
-             // Mostrar información del carro
-            actualizarInformacionCarro();
+        // Comprobar si ya tiene un carro
+        if (tieneCarro) {
+            JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Ferrari LaFerrari?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
 
-            this.setVisible(false);
-            Menu.setVisible(true);
-            Menu.setLocation( this.getX(), this.getY());
-            Menu.setSize(960, 530);
-               
-        }         
+            // Si la respuesta es afirmativa
+            if (respuesta == JOptionPane.YES_OPTION) {
+                tieneCarro = true;
+
+                // Habilitar los botones
+                menuGaraje.setEnabled(true);
+                menuTuning.setEnabled(true);
+                menuCarrera.setEnabled(true);
+
+                // Verificar que el carro no sea null antes de establecerlo
+                if (ferrariLaFerrari != null) {
+                    garaje.setCarroSeleccionado(ferrariLaFerrari);
+                    JOptionPane.showMessageDialog(null, "Carro seleccionado: " + ferrariLaFerrari.getNombre());
+
+                    // Obtener el carro seleccionado para mostrar su información
+                    Carro carroSeleccionado = garaje.getCarroSeleccionado();
+                    if (carroSeleccionado != null) {
+                        GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
+                        GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
+                        GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
+                        GarajeCarroVelocidad.setText("Velocidad Máxima: " + carroSeleccionado.getVelocidadMaxima());
+                        GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
+                        GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    // Actualizar la información del carro
+                    actualizarInformacionCarro();
+
+                    // Cambiar visibilidad de las pantallas
+                    this.setVisible(false);
+                    Ferrari.setVisible(false);
+                    Menu.setVisible(true);
+                    Menu.setLocation(this.getX(), this.getY());
+                    Menu.setSize(960, 530);
+
+                    // Actualizar el dinero
+                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+                    actualizarDineroEnPantalla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
+
     }//GEN-LAST:event_ferrariLaferrariMouseClicked
 
-    
-    
-    
-    
+
     private void FerrariMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FerrariMenuActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
-         Logos.setVisible(true);
-         Logos.setLocation( this.getX(), this.getY());
-         Logos.setSize(960, 530);
+        this.setVisible(false);
+        Ferrari.setVisible(false);
+        Logos.setVisible(true);
+        Logos.setLocation(this.getX(), this.getY());
+        Logos.setSize(960, 530);
     }//GEN-LAST:event_FerrariMenuActionPerformed
 
     private void menuGarajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGarajeActionPerformed
         // TODO add your handling code here:
-          this.setVisible(false);
-          Garaje.setVisible(true);
-          Garaje.setLocation( this.getX(), this.getY());
-          Garaje.setSize(960, 530);
-         
+        this.setVisible(false);
+        Menu.setVisible(false);
+        Garaje.setVisible(true);
+        Garaje.setLocation(this.getX(), this.getY());
+        Garaje.setSize(960, 530);
+
     }//GEN-LAST:event_menuGarajeActionPerformed
 
     private void menuCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCerrarActionPerformed
         // TODO add your handling code here:
-      System.exit(0); // Cierra la aplicación
+        System.exit(0); // Cierra la aplicación
     }//GEN-LAST:event_menuCerrarActionPerformed
 
 
     private void lamboHuracanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lamboHuracanMouseClicked
-        // TODO add your handling code here:   
-         Garaje garaje = new Garaje(); // Crear instancia del garaje
-        
-        if (tieneCarro){
-            
-             JOptionPane.showConfirmDialog(null, "Ya tiene un carro", "Comprar Carro", JOptionPane.YES_OPTION);   
-        }
-       else{ 
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Lamborghini Huracan?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION) {
-            tieneCarro = true;
+        // Obtener el carro Ferrari LaFerrari
+        Carro lmborghiniHuracan = garaje.obtenerCarro("Lamborghini Huracan");
 
-           menuGaraje.setEnabled(true);  //habilitar el boton
-           menuTuning.setEnabled(true);  //habilitar el boton
-           menuCarrera.setEnabled(true);  //habilitar el boton
-            
-             // Asignar el carro seleccionado
-            carroSeleccionado = garaje.obtenerCarro("Lamborghini Huracan");
-            
-            GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
-            GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
-            GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
-            
-            GarajeCarroVelocidad.setText("Velocidad Maxima: " + carroSeleccionado.getVelocidadMaxima());
-            GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
-            GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro()); 
-            
-             // Mostrar información del carro
-            actualizarInformacionCarro();
-            
-            this.setVisible(false);
-            Menu.setVisible(true);
-            Menu.setLocation( this.getX(), this.getY());
-            Menu.setSize(960, 530);
-                
-        }  
+        // Comprobar si ya tiene un carro
+        if (tieneCarro) {
+            JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Lamborghini Huracan?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
+
+            // Si la respuesta es afirmativa
+            if (respuesta == JOptionPane.YES_OPTION) {
+                tieneCarro = true;
+
+                // Habilitar los botones
+                menuGaraje.setEnabled(true);
+                menuTuning.setEnabled(true);
+                menuCarrera.setEnabled(true);
+
+                // Verificar que el carro no sea null antes de establecerlo
+                if (lmborghiniHuracan != null) {
+                    garaje.setCarroSeleccionado(lmborghiniHuracan);
+                    JOptionPane.showMessageDialog(null, "Carro seleccionado: " + lmborghiniHuracan.getNombre());
+
+                    // Obtener el carro seleccionado para mostrar su información
+                    Carro carroSeleccionado = garaje.getCarroSeleccionado();
+                    if (carroSeleccionado != null) {
+                        GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
+                        GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
+                        GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
+                        GarajeCarroVelocidad.setText("Velocidad Máxima: " + carroSeleccionado.getVelocidadMaxima());
+                        GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
+                        GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    // Actualizar la información del carro
+                    actualizarInformacionCarro();
+
+                    // Cambiar visibilidad de las pantallas
+                    this.setVisible(false);
+                    Lambo.setVisible(false);
+                    Menu.setVisible(true);
+                    Menu.setLocation(this.getX(), this.getY());
+                    Menu.setSize(960, 530);
+
+                    // Actualizar el dinero
+                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+                    actualizarDineroEnPantalla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }//GEN-LAST:event_lamboHuracanMouseClicked
 
     private void lamboMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lamboMenuActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-         Logos.setVisible(true);
-         Logos.setLocation( this.getX(), this.getY());
-         Logos.setSize(960, 530);
+        Lambo.setVisible(false);
+        Logos.setVisible(true);
+        Logos.setLocation(this.getX(), this.getY());
+        Logos.setSize(960, 530);
     }//GEN-LAST:event_lamboMenuActionPerformed
 
     private void menuTuningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTuningActionPerformed
         // TODO add your handling code here:
+
         this.setVisible(false);
-         Tuning.setVisible(true);
-         Tuning.setLocation( this.getX(), this.getY());
-         Tuning.setSize(960, 530);
+        Menu.setVisible(false);
+        Tuning.setVisible(true);
+        Tuning.setLocation(this.getX(), this.getY());
+        Tuning.setSize(960, 530);
     }//GEN-LAST:event_menuTuningActionPerformed
 
     private void garajeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_garajeMenuActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-       Menu.setVisible(true);
-         Menu.setLocation( this.getX(), this.getY());
-         Menu.setSize(960, 530);
+        Garaje.setVisible(false);
+        Menu.setVisible(true);
+        Menu.setLocation(this.getX(), this.getY());
+        Menu.setSize(960, 530);
     }//GEN-LAST:event_garajeMenuActionPerformed
 
     private void menuCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCarreraActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
+        this.setVisible(false);
+        Menu.setVisible(false);
         Carrera.setVisible(true);
-         Carrera.setLocation( this.getX(), this.getY());
-         Carrera.setSize(960, 530);
-        
+        Carrera.setLocation(this.getX(), this.getY());
+        Carrera.setSize(960, 530);
+
     }//GEN-LAST:event_menuCarreraActionPerformed
 
     private void tunningMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tunningMenuActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
+        this.setVisible(false);
+        Tuning.setVisible(false);
         Menu.setVisible(true);
-         Menu.setLocation( this.getX(), this.getY());
-         Menu.setSize(960, 530);
+        Menu.setLocation(this.getX(), this.getY());
+        Menu.setSize(960, 530);
     }//GEN-LAST:event_tunningMenuActionPerformed
 
     private void carreraMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carreraMenuActionPerformed
         // TODO add your handling code here:
-            this.setVisible(false);
-            Menu.setVisible(true);
-            Menu.setLocation( this.getX(), this.getY());
-            Menu.setSize(960, 530);
-         
-            carreraMenu.setVisible(false);
-            empezarCarrera.setVisible(true);
-            
-            
-            // Ocultar las imágenes de los carros antes de comenzar
-            CarroCarrera1.setVisible(false);
-            CarroCarrera2.setVisible(false);
-            CarroCarrera3.setVisible(false);
-         
-         
+        this.setVisible(false);
+        Carrera.setVisible(false);
+        Menu.setVisible(true);
+        Menu.setLocation(this.getX(), this.getY());
+        Menu.setSize(960, 530);
+
+        carreraMenu.setVisible(false);
+        empezarCarrera.setVisible(true);
+
+        // Ocultar las imágenes de los carros antes de comenzar
+        CarroCarrera1.setVisible(false);
+        CarroCarrera2.setVisible(false);
+        CarroCarrera3.setVisible(false);
+
+        actualizarDineroEnPantalla();
     }//GEN-LAST:event_carreraMenuActionPerformed
 
     private void empezarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empezarCarreraActionPerformed
-        // TODO add your handling code here:
-        
-             Garaje garaje = new Garaje();
-             Carrera carrera = new Carrera(garaje, CarroCarrera1, CarroCarrera2, CarroCarrera3);
-    
-            // Iniciar la carrera
-            carrera.empezar();
-    
-            empezarCarrera.setVisible(false);  //des el boton
-            carreraMenu.setVisible(true);
+
+        // Verifica que hay un carro seleccionado desde el garaje
+        Carro carroSeleccionado = garaje.getCarroSeleccionado(); // Obtener el carro seleccionado del garaje
+        if (carroSeleccionado == null) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona un carro antes de iniciar la carrera.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crea la instancia de la carrera usando el carro seleccionado
+        Carrera carrera = new Carrera(garaje, CarroCarrera1, CarroCarrera2, CarroCarrera3);
+
+        // Inicia la carrera
+        carrera.empezar();
+
+        // Cambia la visibilidad de las pantallas
+        empezarCarrera.setVisible(false);
+        carreraMenu.setVisible(true);
     }//GEN-LAST:event_empezarCarreraActionPerformed
 
-    
-    
-    
-    
+
     private void tuningMejorarMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarMotorActionPerformed
         // TODO add your handling code here:
-        if (carroSeleccionado != null) {
-        int incremento = 50;
-        carroSeleccionado.setNivelMotor(carroSeleccionado.getNivelMotor() + incremento);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar el motor por 200,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
 
-       
-        JOptionPane.showMessageDialog(this, "¡Nivel del motor mejorado a " + carroSeleccionado.getNivelMotor() + "!", 
-                                      "Mejorar Motor", JOptionPane.INFORMATION_MESSAGE);
-        
-         // actualiza informacion en la interfaz
-        actualizarInformacionCarro();
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay un carro seleccionado.", 
-                                      "Error", JOptionPane.ERROR_MESSAGE);
-    }
-          
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            if (dinero >= 200000) {
+
+                dinero = dinero - 200000;
+                actualizarDineroEnPantalla();
+
+                int incremento = 50;
+                carroSeleccionado.setNivelMotor(carroSeleccionado.getNivelMotor() + incremento);
+
+                JOptionPane.showMessageDialog(this, "¡Nivel del motor mejorado a " + carroSeleccionado.getNivelMotor() + "!",
+                        "Mejorar Motor", JOptionPane.INFORMATION_MESSAGE);
+
+                // actualiza informacion en la interfaz
+                actualizarInformacionCarro();
+            } else {
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
     }//GEN-LAST:event_tuningMejorarMotorActionPerformed
 
     private void tuningMejorarVelocidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarVelocidadActionPerformed
         // TODO add your handling code here:
-        if (carroSeleccionado != null) {
-        int incremento = 20; // Incremento para la velocidad máxima
-        carroSeleccionado.setVelocidadMaxima(carroSeleccionado.getVelocidadMaxima() + incremento);
 
-        // Mostrar mensaje en un cuadro de diálogo
-        JOptionPane.showMessageDialog(this, "¡Velocidad máxima mejorada a " + carroSeleccionado.getVelocidadMaxima() + " km/h!", 
-                                      "Mejorar Velocidad", JOptionPane.INFORMATION_MESSAGE);
-         // Actualizar información en la interfaz
-        actualizarInformacionCarro();
-        
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay un carro seleccionado.", 
-                                      "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar la velocidad punta por 100,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            if (dinero >= 100000) {
+
+                dinero = dinero - 100000;
+                actualizarDineroEnPantalla();
+
+                int incremento = 20; // Incremento para la velocidad máxima
+                carroSeleccionado.setVelocidadMaxima(carroSeleccionado.getVelocidadMaxima() + incremento);
+
+                // Mostrar mensaje en un cuadro de diálogo
+                JOptionPane.showMessageDialog(this, "¡Velocidad máxima mejorada a " + carroSeleccionado.getVelocidadMaxima() + " km/h!",
+                        "Mejorar Velocidad", JOptionPane.INFORMATION_MESSAGE);
+                // Actualizar información en la interfaz
+                actualizarInformacionCarro();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }//GEN-LAST:event_tuningMejorarVelocidadActionPerformed
 
     private void tuningMejorarNitroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarNitroActionPerformed
         // TODO add your handling code here:
-         if (carroSeleccionado != null) {
-        int incremento = 2; // Incremento para el nitro
-        carroSeleccionado.setNivelNitro(carroSeleccionado.getNivelNitro() + incremento);
 
-        // Mostrar mensaje en un cuadro de diálogo
-        JOptionPane.showMessageDialog(this, "¡Nivel de nitro mejorado a " + carroSeleccionado.getNivelNitro() + "!", 
-                                      "Mejorar Nitro", JOptionPane.INFORMATION_MESSAGE);
-        
-         // Actualizar información en la interfaz
-        actualizarInformacionCarro();
-    } else {
-        JOptionPane.showMessageDialog(this, "No hay un carro seleccionado.", 
-                                      "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar el nitro por 150,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            if (dinero >= 150000) {
+
+                dinero = dinero - 150000;
+                actualizarDineroEnPantalla();
+
+                int incremento = 2; // Incremento para el nitro
+                carroSeleccionado.setNivelNitro(carroSeleccionado.getNivelNitro() + incremento);
+
+                // Mostrar mensaje en un cuadro de diálogo
+                JOptionPane.showMessageDialog(this, "¡Nivel de nitro mejorado a " + carroSeleccionado.getNivelNitro() + "!",
+                        "Mejorar Nitro", JOptionPane.INFORMATION_MESSAGE);
+
+                // Actualizar información en la interfaz
+                actualizarInformacionCarro();
+            } else {
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
     }//GEN-LAST:event_tuningMejorarNitroActionPerformed
 
     private void BmwMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BmwMenuActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
+        this.setVisible(false);
+        BMW.setVisible(false);
         Logos.setVisible(true);
-         Logos.setLocation( this.getX(), this.getY());
-         Logos.setSize(960, 530);
+        Logos.setLocation(this.getX(), this.getY());
+        Logos.setSize(960, 530);
     }//GEN-LAST:event_BmwMenuActionPerformed
 
     private void bmwM4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bmwM4MouseClicked
-        // TODO add your handling code here:
-        Garaje garaje = new Garaje(); // Crear instancia del garaje
-        
-        if (tieneCarro){
-            
-             JOptionPane.showConfirmDialog(null, "Ya tiene un carro", "Comprar Carro", JOptionPane.YES_OPTION);   
-        }
-       else{ 
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el BMW M4?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION) {
-            tieneCarro = true;
+       // Obtener el carro Ferrari LaFerrari
+        Carro bmwM4 = garaje.obtenerCarro("BMW M4");
 
-           menuGaraje.setEnabled(true);  //habilitar el boton
-           menuTuning.setEnabled(true);  //habilitar el boton
-           menuCarrera.setEnabled(true);  //habilitar el boton
-            
-             // Asignar el carro seleccionado
-            carroSeleccionado = garaje.obtenerCarro("BMW M4");
-            
-            GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
-            GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
-            GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
-            
-            GarajeCarroVelocidad.setText("Velocidad Maxima: " + carroSeleccionado.getVelocidadMaxima());
-            GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
-            GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro()); 
-            
-             // Mostrar información del carro
-            actualizarInformacionCarro();
-            
-            this.setVisible(false);
-            Menu.setVisible(true);
-            Menu.setLocation( this.getX(), this.getY());
-            Menu.setSize(960, 530); 
-        }          
-        }  
+        // Comprobar si ya tiene un carro
+        if (tieneCarro) {
+            JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el BMW M4?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
+
+            // Si la respuesta es afirmativa
+            if (respuesta == JOptionPane.YES_OPTION) {
+                tieneCarro = true;
+
+                // Habilitar los botones
+                menuGaraje.setEnabled(true);
+                menuTuning.setEnabled(true);
+                menuCarrera.setEnabled(true);
+
+                // Verificar que el carro no sea null antes de establecerlo
+                if (bmwM4 != null) {
+                    garaje.setCarroSeleccionado(bmwM4);
+                    JOptionPane.showMessageDialog(null, "Carro seleccionado: " + bmwM4.getNombre());
+
+                    // Obtener el carro seleccionado para mostrar su información
+                    Carro carroSeleccionado = garaje.getCarroSeleccionado();
+                    if (carroSeleccionado != null) {
+                        GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
+                        GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
+                        GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
+                        GarajeCarroVelocidad.setText("Velocidad Máxima: " + carroSeleccionado.getVelocidadMaxima());
+                        GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
+                        GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    // Actualizar la información del carro
+                    actualizarInformacionCarro();
+
+                    // Cambiar visibilidad de las pantallas
+                    this.setVisible(false);
+                    BMW.setVisible(false);
+                    Menu.setVisible(true);
+                    Menu.setLocation(this.getX(), this.getY());
+                    Menu.setSize(960, 530);
+
+                    // Actualizar el dinero
+                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+                    actualizarDineroEnPantalla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }//GEN-LAST:event_bmwM4MouseClicked
 
     private void logoBMWMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoBMWMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
+        Logos.setVisible(false);
         BMW.setVisible(true);
-        BMW.setLocation( this.getX(), this.getY());
+        BMW.setLocation(this.getX(), this.getY());
         BMW.setSize(960, 530);
     }//GEN-LAST:event_logoBMWMouseClicked
 
-   
-    
-    
-    
-    
-    
-    
     //ACTUALIZAR INFORMACION DEL CARRO AL MEJORARLO
     private void actualizarInformacionCarro() {
-    if (carroSeleccionado != null) {
-        GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
-        GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
-        GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
-        GarajeCarroVelocidad.setText("Velocidad Máxima: " + carroSeleccionado.getVelocidadMaxima());
-        GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
-        GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
-        
-         tuningNivelVelocidad.setText("Velocidad Maxima: " + carroSeleccionado.getVelocidadMaxima());
+        if (carroSeleccionado != null) {
+            GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
+            GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());
+            GarajeCarroAnio.setText("Año: " + carroSeleccionado.getAño());
+            GarajeCarroVelocidad.setText("Velocidad Máxima: " + carroSeleccionado.getVelocidadMaxima());
+            GarajeCarroMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
+            GarajeCarroNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
+
+            tuningNivelVelocidad.setText("Velocidad Maxima: " + carroSeleccionado.getVelocidadMaxima());
             tuningNivelMotor.setText("Nivel Motor: " + carroSeleccionado.getNivelMotor());
             tuningNivelNitro.setText("Nivel Nitro: " + carroSeleccionado.getNivelNitro());
+        }
     }
-}
-    
-  
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -1098,7 +1227,7 @@ public class Pantalla extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Pantalla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1107,10 +1236,6 @@ public class Pantalla extends javax.swing.JFrame {
             }
         });
     }
- static boolean tieneCarro = false;
-    static String Carro =  " " ;
-    private Carro carroSeleccionado;
-    private Garaje garaje; // Instancia global de Garaje
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog BMW;
@@ -1137,6 +1262,7 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JDialog Logos;
     private javax.swing.JDialog Menu;
     private javax.swing.JDialog Tuning;
+    private javax.swing.JLabel TunningDinero;
     private javax.swing.JLabel bmwM4;
     private javax.swing.JButton botonInicio;
     private javax.swing.JButton carreraMenu;
@@ -1169,8 +1295,10 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JLabel logoBMW;
     private javax.swing.JLabel logoFerrari;
     private javax.swing.JLabel logoLambo;
+    private javax.swing.JLabel logosDinero;
     private javax.swing.JButton menuCarrera;
     private javax.swing.JButton menuCerrar;
+    private javax.swing.JLabel menuDinero;
     private javax.swing.JButton menuGaraje;
     private javax.swing.JButton menuTuning;
     private javax.swing.JLabel seleccionaMarca;

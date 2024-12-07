@@ -43,18 +43,15 @@ public class Carro {
     }
     
     public void setNivelMotor(int nivelMotor) {
-    this.nivelMotor = nivelMotor;
+        this.nivelMotor = nivelMotor;
+    }
+
+    public void setVelocidadMaxima(int velocidadMaxima) {
+        this.velocidadMaxima = velocidadMaxima;
+    }
+
+    public void setNivelNitro(int nivelNitro) {
+        this.nivelNitro = nivelNitro;
+    }
+
 }
-
-public void setVelocidadMaxima(int velocidadMaxima) {
-    this.velocidadMaxima = velocidadMaxima;
-}
-
-public void setNivelNitro(int nivelNitro) {
-    this.nivelNitro = nivelNitro;
-}
-
-}
-
-
-    
