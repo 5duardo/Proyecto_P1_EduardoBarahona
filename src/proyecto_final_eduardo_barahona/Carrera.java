@@ -16,6 +16,7 @@ public class Carrera {
     private Timer timer;
     private Random random;
 
+    //Constructor de la clase Carrera.
     public Carrera(Garaje garaje, JLabel carroCarrera1, JLabel carroCarrera2, JLabel carroCarrera3) {
         this.garaje = garaje;
         this.carroCarrera1 = carroCarrera1;
@@ -25,7 +26,7 @@ public class Carrera {
     }
 
     public void empezar() {
-        Carro carroSeleccionado = garaje.getCarroSeleccionado(); // Obtener el carro seleccionado desde el garaje
+        Carro carroSeleccionado = garaje.getCarroSeleccionado();
 
         if (carroSeleccionado == null) {
             JOptionPane.showMessageDialog(null, "Por favor, selecciona un carro antes de iniciar la carrera.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -33,146 +34,137 @@ public class Carrera {
         }
 
         JOptionPane.showMessageDialog(null, "Carro seleccionado: " + carroSeleccionado.getNombre(), "Carro Seleccionado", JOptionPane.INFORMATION_MESSAGE);
-        JOptionPane.showMessageDialog(null, "3", "Carrera", JOptionPane.INFORMATION_MESSAGE);
-        JOptionPane.showMessageDialog(null, "2", "Carrera", JOptionPane.INFORMATION_MESSAGE);
-        JOptionPane.showMessageDialog(null, "1", "Carrera", JOptionPane.INFORMATION_MESSAGE);
-        JOptionPane.showMessageDialog(null, "Comienza!!", "Carrera", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "3...2...1... ¡Go!", "Carrera", JOptionPane.INFORMATION_MESSAGE);
 
         List<Carro> carros = new ArrayList<>(garaje.obtenerTodosLosCarros());
-        
-        // Ocultar todos los JLabels primero
+
         carroCarrera1.setVisible(false);
         carroCarrera2.setVisible(false);
         carroCarrera3.setVisible(false);
-        
 
         mostrarCarrosAleatorios(carros);
-        iniciarTemporizador(carros);
-
+        iniciarCarrera(carros);
     }
 
+    //Selecciona y muestra tres carros aleatorios.
     private void mostrarCarrosAleatorios(List<Carro> carros) {
-        List<Carro> seleccionados = new ArrayList<>();
+        Set<Carro> seleccionados = new HashSet<>();
         while (seleccionados.size() < 3) {
-            Carro carroAleatorio = carros.get(random.nextInt(carros.size()));
-            if (!seleccionados.contains(carroAleatorio)) {
-                seleccionados.add(carroAleatorio);
-            }
+            seleccionados.add(carros.get(random.nextInt(carros.size())));
         }
 
-        // Mostrar carros uno por uno
-        mostrarImagenTemporal(seleccionados.get(0), carroCarrera1, 2000, () -> {
-            mostrarImagenTemporal(seleccionados.get(1), carroCarrera2, 2000, () -> {
-                mostrarImagenTemporal(seleccionados.get(2), carroCarrera3, 2000, null);
-            });
-        });
+        List<Carro> listaSeleccionados = new ArrayList<>(seleccionados);
+        mostrarCarroUnoPorUno(listaSeleccionados);
     }
 
-    private void mostrarImagenTemporal(Carro carro, JLabel label, int tiempo, Runnable siguienteAccion) {
-        label.setText(carro.getNombre()); // Mostrar el nombre del carro
-        label.setVisible(true); // Hacer visible el JLabel
+    //Muestra cada carro seleccionado con un retraso.
+    private void mostrarCarroUnoPorUno(List<Carro> seleccionados) {
+        Timer mostrarTimer = new Timer();
+        int delay = 0;
 
-        // Temporizador para ocultar la imagen después de un tiempo
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (siguienteAccion != null) {
-                    siguienteAccion.run(); // Ejecutar la siguiente acción si existe
+        for (int i = 0; i < seleccionados.size(); i++) {
+            Carro carro = seleccionados.get(i);
+            JLabel label = obtenerLabelPorCarro(carro);
+
+            mostrarTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    label.setText(carro.getNombre());
+                    label.setVisible(true);
                 }
-            }
-        }, tiempo); // Tiempo en milisegundos
+            }, delay);
+
+            delay += 2000;
+        }
     }
 
-    private void iniciarTemporizador(List<Carro> carros) {
+    //Retorna el JLabel asociado al nombre del carro.
+    private JLabel obtenerLabelPorCarro(Carro carro) {
+        switch (carro.getNombre()) {
+            case "BMW M4":
+                return carroCarrera1;
+            case "Lamborghini Huracan":
+                return carroCarrera2;
+            case "Ferrari LaFerrari":
+                return carroCarrera3;
+            default:
+                throw new IllegalArgumentException("Carro no reconocido: " + carro.getNombre());
+        }
+    }
+
+    //Inicia el temporizador para la carrera.
+    private void iniciarCarrera(List<Carro> carros) {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 mostrarResultados(carros);
             }
-        }, 5000); // Espera 5 segundos antes de mostrar resultados
+        }, 6000);
     }
 
+    //Muestra los resultados de la carrera y calcula la suma de tiempos recursivamente.
     private void mostrarResultados(List<Carro> carros) {
         int[] tiempos = new int[carros.size()];
         for (int i = 0; i < tiempos.length; i++) {
-            tiempos[i] = random.nextInt(10) + 1; // Simular tiempos aleatorios de carrera
+            tiempos[i] = random.nextInt(10) + 1;
         }
 
-        // Determinar el ganador y el orden manualmente
+        int ganadorIndex = obtenerGanador(tiempos);
+        Carro ganador = carros.get(ganadorIndex);
+
+        StringBuilder resultados = new StringBuilder("El ganador es: " + ganador.getNombre() + "\n");
+        for (int i = 0; i < tiempos.length; i++) {
+            resultados.append(carros.get(i).getNombre())
+                    .append(" llegó en: ")
+                    .append(tiempos[i])
+                    .append(" segundos\n");
+        }
+
+        int sumaTiempos = sumarTiemposRecursivamente(tiempos, 0);
+        resultados.append("\nSuma total de los tiempos: ").append(sumaTiempos).append(" segundos");
+
+        JOptionPane.showMessageDialog(null, resultados.toString(), "Resultados de la Carrera", JOptionPane.INFORMATION_MESSAGE);
+        mostrarGanador(ganador);
+        actualizarDinero(ganador);
+    }
+
+
+    //Encuentra el índice del carro ganador (el de menor tiempo).
+    private int obtenerGanador(int[] tiempos) {
         int ganadorIndex = 0;
         for (int i = 1; i < tiempos.length; i++) {
             if (tiempos[i] < tiempos[ganadorIndex]) {
-                ganadorIndex = i; // Actualizar el índice del ganador
+                ganadorIndex = i;
             }
         }
-
-        // Crear el mensaje de resultados
-        StringBuilder resultMessage = new StringBuilder("El ganador es: " + carros.get(ganadorIndex).getNombre() + "\n");
-        for (int i = 0; i < tiempos.length; i++) {
-            resultMessage.append(carros.get(i).getNombre())
-                         .append(" llegó en: ")
-                         .append(tiempos[i])
-                         .append(" segundos\n");
-        }
-
-        JOptionPane.showMessageDialog(null, resultMessage.toString(), "Resultados de la Carrera", JOptionPane.INFORMATION_MESSAGE);
-        
-        // Mostrar la imagen del carro ganador primero
-        mostrarImagenGanador(carros.get(ganadorIndex), carros, tiempos);
-        actualizarDinero(carros.get(ganadorIndex));
+        return ganadorIndex;
     }
 
-    private void mostrarImagenGanador(Carro ganador, List<Carro> carros, int[] tiempos) {
-
-        // Mostrar solo el ganador
-        if (ganador.getNombre().equals("BMW")) {
-            carroCarrera1.setVisible(true);
-        } else if (ganador.getNombre().equals("Lamborghini")) {
-            carroCarrera2.setVisible(true);
-        } else if (ganador.getNombre().equals("Ferrari")) {
-            carroCarrera3.setVisible(true);
-        }
-
-        // Esperar un momento antes de mostrar los demás carros
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                mostrarLosOtrosCarros(carros, tiempos);
-            }
-        }, 2000); // Espera 2 segundos antes de mostrar los demás carros
+    //Muestra el carro ganador en pantalla.
+    private void mostrarGanador(Carro ganador) {
+        carroCarrera1.setVisible(ganador.getNombre().equals("BMW M4"));
+        carroCarrera2.setVisible(ganador.getNombre().equals("Lamborghini Huracan"));
+        carroCarrera3.setVisible(ganador.getNombre().equals("Ferrari LaFerrari"));
     }
 
-    private void mostrarLosOtrosCarros(List<Carro> carros, int[] tiempos) {
-        // Mostrar los carros restantes uno por uno
-        for (int i = 0; i < carros.size(); i++) {
-            Carro carro = carros.get(i);
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (carro.getNombre().equals("BMW")) {
-                        carroCarrera1.setVisible(true);
-                    } else if (carro.getNombre().equals("Lamborghini")) {
-                        carroCarrera2.setVisible(true);
-                    } else if (carro.getNombre().equals("Ferrari")) {
-                        carroCarrera3.setVisible(true);
-                    }
-                }
-            }, i * 2000); // Muestra cada carro con un retraso
-        }
-    }
-
+    //Actualiza el dinero del jugador dependiendo del resultado.
     private void actualizarDinero(Carro ganador) {
-        Carro carroSeleccionado = garaje.getCarroSeleccionado(); // Obtener el carro seleccionado desde el garaje
-        if (ganador.getNombre().equals(carroSeleccionado.getNombre())) {
-            Pantalla.setDinero(Pantalla.getDinero() + 100000);
-            JOptionPane.showMessageDialog(null, "Felicidades, ganaste 100,000 por ganar", "Ganancia", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            Pantalla.setDinero(Pantalla.getDinero() + 20000);
-            JOptionPane.showMessageDialog(null, "Perdiste pero ganaste 20,000 por participar", "Ganancia", JOptionPane.INFORMATION_MESSAGE);
+        Carro carroSeleccionado = garaje.getCarroSeleccionado();
+        int ganancia = ganador.getNombre().equals(carroSeleccionado.getNombre()) ? 200000 : 50000;
+
+        Pantalla.setDinero(Pantalla.getDinero() + ganancia);
+        String mensaje = ganador.getNombre().equals(carroSeleccionado.getNombre())
+                ? "¡Felicidades, ganaste 200,000 por ganar!"
+                : "Perdiste, pero ganaste 50,000 por participar.";
+        JOptionPane.showMessageDialog(null, mensaje, "Ganancia", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    //Metodo recursivo que suma los tiempos de llegada de los carros
+    private int sumarTiemposRecursivamente(int[] tiempos, int index) {
+        if (index == tiempos.length) {
+            return 0;
         }
+        return tiempos[index] + sumarTiemposRecursivamente(tiempos, index + 1);
     }
 }

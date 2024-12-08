@@ -16,25 +16,24 @@ public class Pantalla extends javax.swing.JFrame {
     static boolean tieneCarro = false;
     static String Carro = " ";
     private Carro carroSeleccionado;
-    private Garaje garaje; // Instancia global de Garaje
-    private Pantalla pantalla; // Define pantalla como atributo de clase
+    private Garaje garaje; 
+    private Pantalla pantalla;
 
     public Pantalla() {
         initComponents();
-        // metodo para centrar la ventana
+
         centrarVentana();
-        menuGaraje.setEnabled(false);  //des el boton
-        menuTuning.setEnabled(false);  //des el boton
-        menuCarrera.setEnabled(false);  //des el boton
+        menuGaraje.setEnabled(false); 
+        menuTuning.setEnabled(false);  
+        menuCarrera.setEnabled(false); 
 
         carreraMenu.setVisible(false);
 
         actualizarDineroEnPantalla();
 
-        this.garaje = new Garaje(); // Inicializa la variable en el constructor
+        this.garaje = new Garaje(); 
     }
-
-    private static int dinero = 800000; // Variable global de dinero
+    private static int dinero = 800000; 
 
     public static int getDinero() {
         return dinero;
@@ -45,10 +44,7 @@ public class Pantalla extends javax.swing.JFrame {
     }
 
     public void actualizarDineroEnPantalla() {
-        // Formatear el dinero para que sea más legible
         String dineroTexto = String.format("Dinero Disponible: %,d", dinero);
-
-        // Actualizar todos los JLabels con el texto formateado
         logosDinero.setText(dineroTexto);
         menuDinero.setText(dineroTexto);
         TunningDinero.setText(dineroTexto);
@@ -794,32 +790,33 @@ public class Pantalla extends javax.swing.JFrame {
         Ferrari.setSize(960, 530);
     }//GEN-LAST:event_logoFerrariMouseClicked
 
+    
     // CARROS
     private void ferrariLaferrariMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ferrariLaferrariMouseClicked
-        // Obtener el carro Ferrari LaFerrari
+       
         Carro ferrariLaFerrari = garaje.obtenerCarro("Ferrari LaFerrari");
 
-        // Comprobar si ya tiene un carro
+  
         if (tieneCarro) {
             JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
         } else {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Ferrari LaFerrari?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
 
-            // Si la respuesta es afirmativa
+       
             if (respuesta == JOptionPane.YES_OPTION) {
                 tieneCarro = true;
 
-                // Habilitar los botones
+           
                 menuGaraje.setEnabled(true);
                 menuTuning.setEnabled(true);
                 menuCarrera.setEnabled(true);
 
-                // Verificar que el carro no sea null antes de establecerlo
+       
                 if (ferrariLaFerrari != null) {
                     garaje.setCarroSeleccionado(ferrariLaFerrari);
                     JOptionPane.showMessageDialog(null, "Carro seleccionado: " + ferrariLaFerrari.getNombre());
 
-                    // Obtener el carro seleccionado para mostrar su información
+              
                     Carro carroSeleccionado = garaje.getCarroSeleccionado();
                     if (carroSeleccionado != null) {
                         GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
@@ -832,18 +829,16 @@ public class Pantalla extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                    // Actualizar la información del carro
                     actualizarInformacionCarro();
 
-                    // Cambiar visibilidad de las pantallas
                     this.setVisible(false);
                     Ferrari.setVisible(false);
                     Menu.setVisible(true);
                     Menu.setLocation(this.getX(), this.getY());
                     Menu.setSize(960, 530);
 
-                    // Actualizar el dinero
-                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+            
+                    dinero -= 500000; 
                     actualizarDineroEnPantalla();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -875,35 +870,30 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void menuCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCerrarActionPerformed
         // TODO add your handling code here:
-        System.exit(0); // Cierra la aplicación
+        System.exit(0); 
     }//GEN-LAST:event_menuCerrarActionPerformed
 
 
     private void lamboHuracanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lamboHuracanMouseClicked
-        // Obtener el carro Ferrari LaFerrari
+
         Carro lmborghiniHuracan = garaje.obtenerCarro("Lamborghini Huracan");
 
-        // Comprobar si ya tiene un carro
         if (tieneCarro) {
             JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
         } else {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el Lamborghini Huracan?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
 
-            // Si la respuesta es afirmativa
             if (respuesta == JOptionPane.YES_OPTION) {
                 tieneCarro = true;
 
-                // Habilitar los botones
                 menuGaraje.setEnabled(true);
                 menuTuning.setEnabled(true);
                 menuCarrera.setEnabled(true);
 
-                // Verificar que el carro no sea null antes de establecerlo
                 if (lmborghiniHuracan != null) {
                     garaje.setCarroSeleccionado(lmborghiniHuracan);
                     JOptionPane.showMessageDialog(null, "Carro seleccionado: " + lmborghiniHuracan.getNombre());
 
-                    // Obtener el carro seleccionado para mostrar su información
                     Carro carroSeleccionado = garaje.getCarroSeleccionado();
                     if (carroSeleccionado != null) {
                         GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
@@ -916,18 +906,15 @@ public class Pantalla extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                    // Actualizar la información del carro
                     actualizarInformacionCarro();
 
-                    // Cambiar visibilidad de las pantallas
                     this.setVisible(false);
                     Lambo.setVisible(false);
                     Menu.setVisible(true);
                     Menu.setLocation(this.getX(), this.getY());
                     Menu.setSize(960, 530);
 
-                    // Actualizar el dinero
-                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+                    dinero -= 500000; 
                     actualizarDineroEnPantalla();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -994,7 +981,7 @@ public class Pantalla extends javax.swing.JFrame {
         carreraMenu.setVisible(false);
         empezarCarrera.setVisible(true);
 
-        // Ocultar las imágenes de los carros antes de comenzar
+  
         CarroCarrera1.setVisible(false);
         CarroCarrera2.setVisible(false);
         CarroCarrera3.setVisible(false);
@@ -1004,76 +991,83 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void empezarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empezarCarreraActionPerformed
 
-        // Verifica que hay un carro seleccionado desde el garaje
-        Carro carroSeleccionado = garaje.getCarroSeleccionado(); // Obtener el carro seleccionado del garaje
+        Carro carroSeleccionado = garaje.getCarroSeleccionado(); 
         if (carroSeleccionado == null) {
             JOptionPane.showMessageDialog(null, "Por favor, selecciona un carro antes de iniciar la carrera.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Crea la instancia de la carrera usando el carro seleccionado
         Carrera carrera = new Carrera(garaje, CarroCarrera1, CarroCarrera2, CarroCarrera3);
 
-        // Inicia la carrera
         carrera.empezar();
 
-        // Cambia la visibilidad de las pantallas
         empezarCarrera.setVisible(false);
         carreraMenu.setVisible(true);
     }//GEN-LAST:event_empezarCarreraActionPerformed
 
 
     private void tuningMejorarMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarMotorActionPerformed
-        // TODO add your handling code here:
+     
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar el motor por 200,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
+          
+            Carro carroSeleccionado = garaje.getCarroSeleccionado();
 
+      
+            if (carroSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecciona un carro primero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+       
             if (dinero >= 200000) {
-
-                dinero = dinero - 200000;
+                dinero -= 200000; 
                 actualizarDineroEnPantalla();
 
                 int incremento = 50;
-                carroSeleccionado.setNivelMotor(carroSeleccionado.getNivelMotor() + incremento);
+                carroSeleccionado.setNivelMotor(carroSeleccionado.getNivelMotor() + incremento); 
 
-                JOptionPane.showMessageDialog(this, "¡Nivel del motor mejorado a " + carroSeleccionado.getNivelMotor() + "!",
+                JOptionPane.showMessageDialog(this, "¡Nivel del motor mejorado a " + carroSeleccionado.getNivelMotor() + "!", 
                         "Mejorar Motor", JOptionPane.INFORMATION_MESSAGE);
 
-                // actualiza informacion en la interfaz
+              
                 actualizarInformacionCarro();
             } else {
-                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
         }
 
     }//GEN-LAST:event_tuningMejorarMotorActionPerformed
 
     private void tuningMejorarVelocidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarVelocidadActionPerformed
-        // TODO add your handling code here:
-
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar la velocidad punta por 100,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
+       
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar la velocidad por 200,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
+          
+            Carro carroSeleccionado = garaje.getCarroSeleccionado();
 
-            if (dinero >= 100000) {
+          
+            if (carroSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecciona un carro primero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-                dinero = dinero - 100000;
+            if (dinero >= 200000) {
+                dinero -= 200000; 
                 actualizarDineroEnPantalla();
 
-                int incremento = 20; // Incremento para la velocidad máxima
-                carroSeleccionado.setVelocidadMaxima(carroSeleccionado.getVelocidadMaxima() + incremento);
+                int incremento = 50;
+                carroSeleccionado.setVelocidadMaxima(carroSeleccionado.getVelocidadMaxima() + incremento); 
 
-                // Mostrar mensaje en un cuadro de diálogo
-                JOptionPane.showMessageDialog(this, "¡Velocidad máxima mejorada a " + carroSeleccionado.getVelocidadMaxima() + " km/h!",
+                JOptionPane.showMessageDialog(this, "¡Velocidad punta mejorada a " + carroSeleccionado.getVelocidadMaxima() + "!", 
                         "Mejorar Velocidad", JOptionPane.INFORMATION_MESSAGE);
-                // Actualizar información en la interfaz
-                actualizarInformacionCarro();
 
+                actualizarInformacionCarro();
             } else {
-                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -1081,28 +1075,31 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_tuningMejorarVelocidadActionPerformed
 
     private void tuningMejorarNitroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tuningMejorarNitroActionPerformed
-        // TODO add your handling code here:
 
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar el nitro por 150,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas mejorar el Nitro por 100,000?", "Mejorar", JOptionPane.YES_NO_OPTION);
 
         if (respuesta == JOptionPane.YES_OPTION) {
 
-            if (dinero >= 150000) {
+            Carro carroSeleccionado = garaje.getCarroSeleccionado();
 
-                dinero = dinero - 150000;
-                actualizarDineroEnPantalla();
+            if (carroSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecciona un carro primero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
 
-                int incremento = 2; // Incremento para el nitro
-                carroSeleccionado.setNivelNitro(carroSeleccionado.getNivelNitro() + incremento);
+            if (dinero >= 100000) {
+                dinero -= 100000; 
+                actualizarDineroEnPantalla(); 
 
-                // Mostrar mensaje en un cuadro de diálogo
-                JOptionPane.showMessageDialog(this, "¡Nivel de nitro mejorado a " + carroSeleccionado.getNivelNitro() + "!",
-                        "Mejorar Nitro", JOptionPane.INFORMATION_MESSAGE);
+                int incremento = 1;
+                carroSeleccionado.setNivelNitro(carroSeleccionado.getNivelNitro() + incremento); 
 
-                // Actualizar información en la interfaz
+                JOptionPane.showMessageDialog(this, "¡Nivel de Nitro mejorado a " + carroSeleccionado.getNivelNitro() + "!", 
+                        "Mejorar Velocidad", JOptionPane.INFORMATION_MESSAGE);
+
                 actualizarInformacionCarro();
             } else {
-                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.",
+                JOptionPane.showMessageDialog(this, "No tienes dinero suficiente para mejorar.", 
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -1120,30 +1117,28 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_BmwMenuActionPerformed
 
     private void bmwM4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bmwM4MouseClicked
-       // Obtener el carro Ferrari LaFerrari
+   
         Carro bmwM4 = garaje.obtenerCarro("BMW M4");
 
-        // Comprobar si ya tiene un carro
         if (tieneCarro) {
             JOptionPane.showMessageDialog(null, "Ya tienes un carro", "Comprar Carro", JOptionPane.WARNING_MESSAGE);
         } else {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Deseas comprar el BMW M4?", "Comprar Carro", JOptionPane.YES_NO_OPTION);
 
-            // Si la respuesta es afirmativa
             if (respuesta == JOptionPane.YES_OPTION) {
                 tieneCarro = true;
 
-                // Habilitar los botones
+     
                 menuGaraje.setEnabled(true);
                 menuTuning.setEnabled(true);
                 menuCarrera.setEnabled(true);
 
-                // Verificar que el carro no sea null antes de establecerlo
+          
                 if (bmwM4 != null) {
                     garaje.setCarroSeleccionado(bmwM4);
                     JOptionPane.showMessageDialog(null, "Carro seleccionado: " + bmwM4.getNombre());
 
-                    // Obtener el carro seleccionado para mostrar su información
+                
                     Carro carroSeleccionado = garaje.getCarroSeleccionado();
                     if (carroSeleccionado != null) {
                         GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
@@ -1156,18 +1151,18 @@ public class Pantalla extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Error: No se pudo obtener el carro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                    // Actualizar la información del carro
+            
                     actualizarInformacionCarro();
 
-                    // Cambiar visibilidad de las pantallas
+          
                     this.setVisible(false);
                     BMW.setVisible(false);
                     Menu.setVisible(true);
                     Menu.setLocation(this.getX(), this.getY());
                     Menu.setSize(960, 530);
 
-                    // Actualizar el dinero
-                    dinero -= 500000; // Asumiendo que el carro cuesta 500000
+                 
+                    dinero -= 500000; 
                     actualizarDineroEnPantalla();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error: El carro no fue encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1187,6 +1182,9 @@ public class Pantalla extends javax.swing.JFrame {
 
     //ACTUALIZAR INFORMACION DEL CARRO AL MEJORARLO
     private void actualizarInformacionCarro() {
+        
+            Carro carroSeleccionado = garaje.getCarroSeleccionado();
+        
         if (carroSeleccionado != null) {
             GarajeCarroMarca.setText("Marca: " + carroSeleccionado.getMarca());
             GarajeCarroModelo.setText("Modelo: " + carroSeleccionado.getModelo());

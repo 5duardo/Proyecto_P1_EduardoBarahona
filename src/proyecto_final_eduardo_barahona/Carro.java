@@ -27,7 +27,6 @@ public class Carro {
         this.nivelNitro = nivelNitro;
     }
 
-    // Getters
     public String getNombre() { return nombre; }
     public String getMarca() { return marca; }
     public String getModelo() { return modelo; }

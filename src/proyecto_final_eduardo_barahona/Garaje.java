@@ -18,10 +18,10 @@ public class Garaje {
 
     public Garaje() {
         carros = new ArrayList<>();
-        // Carros de ejemplo
-        carros.add(new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2015, 800, 350, 0));
-        carros.add(new Carro("Lamborghini Huracan", "Lamborghini", "Huracan", 2020, 620, 330, 0));
-        carros.add(new Carro("BMW M4", "BMW", "M4", 2005, 478, 324, 0));
+      
+        carros.add(new Carro("Ferrari LaFerrari", "Ferrari", "LaFerrari", 2025, 800, 350, 0));
+        carros.add(new Carro("Lamborghini Huracan", "Lamborghini", "Huracan", 2021, 700, 330, 0));
+        carros.add(new Carro("BMW M4", "BMW", "M4", 2020, 600, 320, 0));
     }
 
     public Carro obtenerCarro(String nombre) {
@@ -37,12 +37,12 @@ public class Garaje {
         return carros;
     }
     
-    // Método para establecer el carro seleccionado
+ 
     public void setCarroSeleccionado(Carro carro) {
         this.carroSeleccionado = carro;
     }
 
-    // Método para obtener el carro seleccionado
+
     public Carro getCarroSeleccionado() {
         return carroSeleccionado;
     }
