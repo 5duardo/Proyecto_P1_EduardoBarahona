@@ -743,7 +743,7 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel2.setText("EXO CARS");
         jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 255, 255)));
         jLabel2.setOpaque(true);
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 60));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 920, 60));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto_final_eduardo_barahona/inicio.jpg"))); // NOI18N
         jLabel3.setText("jLabel3");
@@ -982,9 +982,9 @@ public class Pantalla extends javax.swing.JFrame {
         empezarCarrera.setVisible(true);
 
   
-        CarroCarrera1.setVisible(false);
-        CarroCarrera2.setVisible(false);
-        CarroCarrera3.setVisible(false);
+        CarroCarrera1.setVisible(true);
+        CarroCarrera2.setVisible(true);
+        CarroCarrera3.setVisible(true);
 
         actualizarDineroEnPantalla();
     }//GEN-LAST:event_carreraMenuActionPerformed

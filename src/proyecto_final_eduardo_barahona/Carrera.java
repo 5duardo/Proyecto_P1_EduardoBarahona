@@ -28,11 +28,6 @@ public class Carrera {
     public void empezar() {
         Carro carroSeleccionado = garaje.getCarroSeleccionado();
 
-        if (carroSeleccionado == null) {
-            JOptionPane.showMessageDialog(null, "Por favor, selecciona un carro antes de iniciar la carrera.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         JOptionPane.showMessageDialog(null, "Carro seleccionado: " + carroSeleccionado.getNombre(), "Carro Seleccionado", JOptionPane.INFORMATION_MESSAGE);
         JOptionPane.showMessageDialog(null, "3...2...1... ¡Go!", "Carrera", JOptionPane.INFORMATION_MESSAGE);
 
